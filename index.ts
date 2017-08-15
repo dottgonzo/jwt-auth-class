@@ -10,7 +10,8 @@ export class Auth {
         ignoreExpiration: false,
         ignoreNotBefore: false
     }
-    constructor(secret, options: IJwtAuthOptions) {
+    constructor(secret, options?: IJwtAuthOptions) {
+        if (!secret) throw Error('no secret provided')
         this.secret = secret
         if (options) this.options = options
     }

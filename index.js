@@ -7,6 +7,8 @@ var Auth = (function () {
             ignoreExpiration: false,
             ignoreNotBefore: false
         };
+        if (!secret)
+            throw Error('no secret provided');
         this.secret = secret;
         if (options)
             this.options = options;
