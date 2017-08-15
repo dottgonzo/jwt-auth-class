@@ -1,8 +1,8 @@
 import * as jwt from "jsonwebtoken"
 
 export interface IJwtAuthOptions {
-    ignoreExpiration: boolean
-    ignoreNotBefore: boolean
+    ignoreExpiration?: boolean
+    ignoreNotBefore?: boolean
 }
 export class Auth {
     secret: string
@@ -15,7 +15,7 @@ export class Auth {
         this.secret = secret
         if (options) this.options = options
     }
-    verify(token): any {
+    verify(token: string): any {
         const that = this
         let t = false
         const o = {
@@ -29,12 +29,18 @@ export class Auth {
         }
         return t
     }
-    sign(object) {
+    sign(object: object): false | string {
         const that = this
-        if (that.options.ignoreExpiration) {
-            jwt.sign(object, that.secret, { noTimestamp: true })
-        } else {
-            jwt.sign(object)
+        let token:string
+        try {
+            if (that.options.ignoreExpiration) {
+                token = jwt.sign(object, that.secret, { noTimestamp: true })
+            } else {
+                token = jwt.sign(object, that.secret)
+            }
+            return token
+        } catch (err) {
+            return false
         }
 
     }

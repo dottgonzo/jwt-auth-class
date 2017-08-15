@@ -30,11 +30,18 @@ var Auth = (function () {
     };
     Auth.prototype.sign = function (object) {
         var that = this;
-        if (that.options.ignoreExpiration) {
-            jwt.sign(object, that.secret, { noTimestamp: true });
+        var token;
+        try {
+            if (that.options.ignoreExpiration) {
+                token = jwt.sign(object, that.secret, { noTimestamp: true });
+            }
+            else {
+                token = jwt.sign(object, that.secret);
+            }
+            return token;
         }
-        else {
-            jwt.sign(object);
+        catch (err) {
+            return false;
         }
     };
     return Auth;
